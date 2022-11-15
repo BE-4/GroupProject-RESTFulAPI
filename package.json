@@ -1,0 +1,30 @@
+{
+  "name": "groupproject-restfulapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app",
+    "dev": "nodemon app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BE-4/GroupProject-RESTFulAPI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BE-4/GroupProject-RESTFulAPI/issues"
+  },
+  "homepage": "https://github.com/BE-4/GroupProject-RESTFulAPI#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
