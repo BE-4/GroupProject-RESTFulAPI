@@ -1,10 +1,11 @@
 const express = require("express");
 const db = require("./config/db");
 const app = express();
+require("dotenv").config();
 
 const allRoutes = require("./routes");
 
-const PORT = 8080;
+const PORT = process.env.PORT || 3000;
 
 db.then(() => {
   console.log("Database Connected");
@@ -13,6 +14,11 @@ db.then(() => {
 });
 
 app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 app.use(allRoutes);
 
 app.listen(PORT, () => {
