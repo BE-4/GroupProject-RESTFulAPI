@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/BE-4/GroupProject-RESTFulAPI#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.2"
