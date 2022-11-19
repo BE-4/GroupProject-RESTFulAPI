@@ -21,7 +21,7 @@ module.exports = {
       }
     } catch (err) {
       res.status(500).json({
-        message: "Sialahkan login terlebih dahulu",
+        message: "Silahkan login terlebih dahulu",
       });
     }
   },
