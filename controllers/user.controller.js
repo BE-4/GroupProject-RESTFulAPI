@@ -31,7 +31,7 @@ module.exports = {
       const auth = req.headers.authorization;
       const token = auth.split(" ")[1];
       const user = jwt.verify(token, process.env.API_SECRET);
-      const users = await User.find({ email: user.email }, "-__v -password");
+      const users = await User.find({ id: user.id }, "-__v -password");
       res.status(200).json({
         message: "Data user",
         data: users,
@@ -48,7 +48,7 @@ module.exports = {
       const auth = req.headers.authorization;
       const token = auth.split(" ")[1];
       const user = jwt.verify(token, process.env.API_SECRET);
-      await User.findOneAndDelete({ email: user.email });
+      await User.findOneAndDelete({ id: user.id });
       res.status(200).json({
         message: "User berhasil dihapus",
       });
