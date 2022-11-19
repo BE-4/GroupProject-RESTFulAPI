@@ -8,7 +8,12 @@
   const express = require("express");
   const router = express.Router();
 
-  const { getAllPsikolog, addPsikolog, updatePsikolog, deletePsikolog } = require("../controllers/psikolog.controller");
+  const {
+    getAllPsikolog,
+    addPsikolog,
+    updatePsikolog,
+    deletePsikolog,
+  } = require("../controllers/psikolog.controller");
 
   router.get("/", getAllPsikolog);
   router.post("/", addPsikolog);
@@ -59,7 +64,7 @@
     },
     ```
 
-    ![img](getallpsikolog.JPG)
+    ![img](./Psikolog/getallpsikolog.JPG)
 
   - getDetailPsikolog (Mendapatkan detail dari masing-masing psikolog berdasarkan id) :
 
@@ -76,7 +81,8 @@
       console.log(error);
     }
     ```
-    ![img](getdetailpsikolog.JPG)
+
+    ![img](./Psikolog/getdetailpsikolog.JPG)
 
   - addPsikolog (Menambahkan data psikolog baru) :
 
@@ -93,7 +99,7 @@
     },
     ```
 
-    ![img](addpsikolog.JPG)
+    ![img](./Psikolog/addpsikolog.JPG)
 
   - updatePsikolog (Mengupdate data psikolog berdasarkan id) :
 
@@ -114,11 +120,11 @@
     },
     ```
 
-    ![img](updatepsikolog.JPG)
+    ![img](./Psikolog/updatepsikolog.JPG)
 
     - Setelah kita update dan get data kembali :
 
-    ![img](afterupdate.JPG)
+    ![img](./Psikolog/afterupdate.JPG)
 
   - deletePsikolog (Menghapus psikolog berdasarkan id) :
 
@@ -135,8 +141,8 @@
     };
     ```
 
-    ![img](deletepsikolog.JPG)
+    ![img](./Psikolog/deletepsikolog.JPG)
 
     - Setelah kita melakukan delete data dan get data kembali :
 
-    ![img](afterdelete.JPG)
+    ![img](./Psikolog/afterdelete.JPG)
