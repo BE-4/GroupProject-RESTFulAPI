@@ -1,5 +1,294 @@
 # API Documentation
 
+## _Endpoint Auth_
+
+- Router :
+
+  ```js
+  const express = require("express");
+  const router = express.Router();
+
+  const {
+    addKuesioner,
+    getKuesioner,
+    jawabKuesioner,
+    getHasilKuesioner,
+  } = require("../controllers/kuesioner.controller");
+
+  router.post("/add", addKuesioner);
+  router.get("/", getKuesioner);
+  router.post("/", jawabKuesioner);
+  router.get("/hasil", getHasilKuesioner);
+
+  module.exports = router;
+  ```
+
+- Controller :
+
+  - register :
+
+    ```js
+      register: (req, res) => {
+        const user = new User({
+          nama: req.body.nama,
+          email: req.body.email,
+          role: req.body.role,
+          password: bcrypt.hashSync(req.body.password, 8),
+        });
+
+        user.save((err) => {
+          if (err) {
+            res.status(500).send({
+              message: err,
+            });
+            return;
+            } else {
+              res.status(200).send({
+                message: "User berhasil register",
+            });
+          }
+        });
+      },
+    ```
+
+    ![img](./Auth/register_admin.png)
+    ![img](./Auth/register_normal.png)
+
+  - login :
+    ```js
+    login: async (req, res) => {
+        const user = await User.findOne({
+          email: req.body.email,
+        }).exec((err, user) => {
+        if (err) {
+          res.status(500).json({
+            message: err,
+          });
+          return;
+        }
+        if (!user) {
+          return res.status(404).json({
+            message: "User tidak ditemukan",
+          });
+        }
+        const passwordIsValid = bcrypt.compareSync(
+          req.body.password,
+          user.password
+        );
+        if (!passwordIsValid) {
+          return res.json({
+            accessToken: null,
+            message: "Password salah",
+          });
+        }
+        const token = jwt.sign(
+        {
+          id: user.id,
+          nama: user.nama,
+          email: user.email,
+          role: user.role,
+        },
+        process.env.API_SECRET,
+        {
+          expiresIn: "1200s",
+        }
+        );
+      res.status(200).json({
+        user: {
+          id: user._id,
+          email: user.email,
+          nama: user.nama,
+          role: user.role,
+        },
+        message: "Login berhasil",
+        accessToken: token,
+      });
+    });
+    },
+    ```
+    ![img](./Auth/login.png)
+
+## _Endpoint Kuesioner_
+
+- Router :
+
+  ```js
+  const express = require("express");
+  const router = express.Router();
+
+  const {
+    addKuesioner,
+    getKuesioner,
+    jawabKuesioner,
+    getHasilKuesioner,
+  } = require("../controllers/kuesioner.controller");
+
+  router.post("/add", addKuesioner);
+  router.get("/", getKuesioner);
+  router.post("/", jawabKuesioner);
+  router.get("/hasil", getHasilKuesioner);
+
+  module.exports = router;
+  ```
+
+- Models :
+
+  - SoalKuesioner :
+
+    ```js
+    const mongoose = require("mongoose");
+    const { Schema } = mongoose;
+
+    const SoalKuesionerSchema = new Schema({
+      pertanyaan: {
+        type: String,
+        required: true,
+      },
+    });
+
+    const SoalKuesioner = mongoose.model("SoalKuesioner", SoalKuesionerSchema);
+
+    module.exports = SoalKuesioner;
+    ```
+
+  - HasilKuesioner :
+
+    ```js
+    const mongoose = require("mongoose");
+    const SoalKuesioner = require("./soalkuesioner");
+    const User = require("./user");
+    const { Schema } = mongoose;
+
+    const HasilKuesionerSchema = new Schema({
+      id_user: {
+        type: String,
+        required: true,
+        references: [{ type: Schema.Types.ObjectId, ref: User }],
+      },
+      hasil: [
+        {
+          id_soal: {
+            type: String,
+            required: true,
+            references: [{ type: Schema.Types.ObjectId, ref: SoalKuesioner }],
+          },
+          jawaban: {
+            type: String,
+            enum: ["Tidak pernah", "Jarang", "Kadang-kadang", "Sering"],
+          },
+          bobot: {
+            type: Number,
+            enum: [1, 2, 3, 4],
+          },
+        },
+      ],
+    });
+
+    const HasilKuesioner = mongoose.model(
+      "HasilKuesioner",
+      HasilKuesionerSchema
+    );
+
+    module.exports = HasilKuesioner;
+    ```
+
+- Controller :
+
+  - addKuesioner :
+
+    ```js
+    addKuesioner: (req, res) => {
+      const data = req.body;
+      const kuesioner = new SoalKuesioner(data);
+
+      kuesioner.save();
+
+      res.status(200).json({
+        message: "Kuesioner berhasil ditambahkan",
+      });
+    },
+    ```
+
+    ![img](./Kuesioner/add_kuesioner.png)
+
+  - getKuesioner :
+
+    ```js
+    getKuesioner: async (req, res) => {
+      try {
+        const auth = req.headers.authorization;
+        const token = auth.split(" ")[1];
+        const user = jwt.verify(token, process.env.API_SECRET);
+        const kuesioner = await SoalKuesioner.find({}, "-__v");
+        res.status(200).json({
+          message: "Berhasil mendapat data pertanyaan",
+          data: kuesioner,
+        });
+      } catch (err) {
+        res.status(500).json({
+          message: "Silahkan login terlebih dahulu",
+        });
+      }
+    },
+
+    ```
+
+    - Masukkan token yang didapat setelah login pada headers authorization
+      ![img](./Kuesioner/getkuesioner.png)
+
+  - jawabKuesioner :
+
+    ```js
+    jawabKuesioner: async (req, res) => {
+    try {
+        const auth = req.headers.authorization;
+        const token = auth.split(" ")[1];
+        const user = jwt.verify(token, process.env.API_SECRET);
+        const data = req.body;
+        const kuesioner = new HasilKuesioner(data);
+
+        kuesioner.save();
+
+        res.status(200).json({
+          message: "Selesai menjawab pertanyaan",
+        });
+      } catch (err) {
+        res.status(500).json({
+          message: "Silahkan login terlebih dahulu",
+        });
+      }
+    },
+
+    ```
+
+    - Masukkan token yang didapat setelah login pada headers authorization
+      ![img](./Kuesioner/jawabkuesioner.png)
+
+  - getHasilKuesioner
+
+    ```js
+    getHasilKuesioner: async (req, res) => {
+      try {
+        const auth = req.headers.authorization;
+        const token = auth.split(" ")[1];
+        const user = jwt.verify(token, process.env.API_SECRET);
+        const kuesioner = await HasilKuesioner.find({ id_user: user.id }, "-__v");
+        res.status(200).json({
+          message: "Berhasil mendapatkan hasil kuesioner",
+          data: kuesioner,
+        });
+      } catch (err) {
+        res.status(500).json({
+         message: "Silahkan login terlebih dahulu",
+        });
+      }
+    },
+
+    ```
+
+    - Masukkan token yang didapat setelah login pada headers authorization
+      ![img](./Kuesioner/hasilkuesioner.png)
+
 ## _Endpoint Psikolog_
 
 - Router :
