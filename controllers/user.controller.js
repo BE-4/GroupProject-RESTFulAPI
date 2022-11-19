@@ -1,7 +1,6 @@
 const { json } = require("express");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const { restart } = require("nodemon");
 
 module.exports = {
   getAllUser: async (req, res) => {
@@ -12,7 +11,7 @@ module.exports = {
       if (user.role == "admin") {
         const users = await User.find({}, "-__v -password");
         res.status(200).json({
-          message: "success get data user",
+          message: "Data user",
           data: users,
         });
       } else {
@@ -22,7 +21,40 @@ module.exports = {
       }
     } catch (err) {
       res.status(500).json({
-        message: err,
+        message: "Sialahkan login terlebih dahulu",
+      });
+    }
+  },
+
+  profile: async (req, res) => {
+    try {
+      const auth = req.headers.authorization;
+      const token = auth.split(" ")[1];
+      const user = jwt.verify(token, process.env.API_SECRET);
+      const users = await User.find({ email: user.email }, "-__v -password");
+      res.status(200).json({
+        message: "Data user",
+        data: users,
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: "Silahkan login terlebih dahulu",
+      });
+    }
+  },
+
+  deleteUser: async (req, res) => {
+    try {
+      const auth = req.headers.authorization;
+      const token = auth.split(" ")[1];
+      const user = jwt.verify(token, process.env.API_SECRET);
+      await User.findOneAndDelete({ email: user.email });
+      res.status(200).json({
+        message: "User berhasil dihapus",
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: "Silahkan login terlebih dahulu",
       });
     }
   },
@@ -43,9 +75,8 @@ module.exports = {
       }
     } catch (err) {
       res.status(500).json({
-        message: err,
+        message: "Silahkan login sebagai admin",
       });
     }
   },
-
 };
