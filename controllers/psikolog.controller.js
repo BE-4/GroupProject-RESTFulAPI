@@ -3,10 +3,24 @@ const Psikolog = require("../models/psikolog");
 module.exports = {
   getAllPsikolog: async (req, res) => {
     try {
-      const psikolog = await Psikolog.find({}, "-password -__v");
+      const psikolog = await Psikolog.find({}, "-password -__v -pengalaman");
 
       res.status(200).json({
         message: "success get data psikolog",
+        data: psikolog,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getDetailPsikolog: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const psikolog = await Psikolog.findById(id, "-__v -_id");
+
+      res.status(200).json({
+        message: "success get data user",
         data: psikolog,
       });
     } catch (error) {
