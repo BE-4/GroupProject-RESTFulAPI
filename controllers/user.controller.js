@@ -21,7 +21,7 @@ module.exports = {
       }
     } catch (err) {
       res.status(500).json({
-        message: "Sialahkan login terlebih dahulu",
+        message: "Silahkan login terlebih dahulu",
       });
     }
   },
@@ -79,4 +79,31 @@ module.exports = {
       });
     }
   },
+
+  updateByID : async (req, res) => {
+    const { id } = req.params;
+    const data = req.body;
+
+    const user = await User.findByIdAndUpdate(id, data);
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Data berhasil di Update !",
+    });
+
+    user.save();
+  },
+
+  deleteByID : async (req, res) => {
+    const { id } = req.params;
+  
+    const user = await User.findById(id);
+
+    await user.remove();
+    res.json({
+      message: "Data yang dipilih berhasil dihapus !",
+      data: "terhapus",
+    });
+  }
 };
