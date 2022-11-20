@@ -584,5 +584,6 @@
     });
     ```
 
-    ![img](user_deletebyid.png)
+    ![img](beforedelete.JPG)
+    ![img](delete.JPG)
 
