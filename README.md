@@ -435,3 +435,153 @@
     - Setelah kita melakukan delete data dan get data kembali :
 
     ![img](./Psikolog/afterdelete.JPG)
+## _Endpoint User_
+
+- Router
+
+  ```js
+  const express = require("express");
+  const router = express.Router();
+
+  const { getAllUser, profile, deleteUser, admin, updateByID, deleteByID } = require("../controllers/user.controller");
+
+  router.get("/allUser", getAllUser);
+  router.get("/profile", profile);
+  router.delete("/deleteUser", deleteUser);
+  router.get("/admin", admin);
+  router.patch("/:id", updateByID);
+  router.delete("/:id", deleteByID);
+
+  module.exports = router;
+  ```
+
+- Controller :
+
+  - getAllUser :
+
+    ```js
+    try {
+      const auth = req.headers.authorization;
+      const token = auth.split(" ")[1];
+      const user = jwt.verify(token, process.env.API_SECRET);
+      if (user.role == "admin") {
+        const users = await User.find({}, "-__v -password");
+        res.status(200).json({
+          message: "Data user",
+          data: users,
+        });
+      } else {
+        res.status(400).json({
+          message: "Anda bukan admin",
+        });
+      }
+    } catch (err) {
+      res.status(500).json({
+        message: "Silahkan login terlebih dahulu",
+      });
+    }
+    ```
+
+    ![img](get_All_User.png)
+
+  - profile :
+
+    ```js
+    try {
+      const auth = req.headers.authorization;
+      const token = auth.split(" ")[1];
+      const user = jwt.verify(token, process.env.API_SECRET);
+      const users = await User.find({ _id: user.id }, "-__v -password");
+      res.status(200).json({
+        message: "Data user",
+        data: users,
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: "Silahkan login terlebih dahulu",
+      });
+    }
+    ```
+
+    ![img](user_profile.png)
+
+  - deleteUser :
+
+    ```js
+    try {
+      const auth = req.headers.authorization;
+      const token = auth.split(" ")[1];
+      const user = jwt.verify(token, process.env.API_SECRET);
+      await User.findOneAndDelete({ _id: user.id });
+      res.status(200).json({
+        message: "User berhasil dihapus",
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: "Silahkan login terlebih dahulu",
+      });
+    }
+    ```
+
+    ![img](delete_user.png)
+
+  - admin :
+
+    ```js
+    try {
+      const auth = req.headers.authorization;
+      const token = auth.split(" ")[1];
+      const user = jwt.verify(token, process.env.API_SECRET);
+      if (user.role == "admin") {
+        res.status(200).json({
+          message: "Ini halaman admin",
+        });
+      } else {
+        res.status(500).json({
+          message: "Anda bukan admin",
+        });
+      }
+    } catch (err) {
+      res.status(500).json({
+        message: "Silahkan login sebagai admin",
+      });
+    }
+    ```
+
+    ![img](user_admin.png)
+
+  - updateByID :
+
+    ```js
+    const { id } = req.params;
+    const data = req.body;
+
+    const user = await User.findByIdAndUpdate(id, data);
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Data berhasil di Update !",
+    });
+
+    user.save();
+    ```
+
+    ![img](user_update.png)
+
+  - deleteByID :
+
+    ```js
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+
+    await user.remove();
+    res.json({
+      message: "Data yang dipilih berhasil dihapus !",
+      data: "terhapus",
+    });
+    ```
+
+    ![img](user_deletebyid.png)
+
