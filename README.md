@@ -482,7 +482,7 @@
     }
     ```
 
-    ![img](get_All_User.png)
+    ![img](./user/get_All_User.png)
 
   - profile :
 
@@ -503,7 +503,7 @@
     }
     ```
 
-    ![img](user_profile.png)
+    ![img](./user/user_profile.png)
 
   - deleteUser :
 
@@ -523,7 +523,7 @@
     }
     ```
 
-    ![img](delete_user.png)
+    ![img](./user/delete_user.png)
 
   - admin :
 
@@ -548,7 +548,7 @@
     }
     ```
 
-    ![img](user_admin.png)
+    ![img](./user/user_admin.png)
 
   - updateByID :
 
@@ -566,9 +566,9 @@
 
     user.save();
     ```
-    ![img](beforeupdate.JPG)
-    ![img](update.JPG)
-    ![img](afterupdatee.JPG)
+    ![img](./user/beforeupdate.JPG)
+    ![img](./user/update.JPG)
+    ![img](./user/afterupdatee.JPG)
 
   - deleteByID :
 
@@ -584,6 +584,6 @@
     });
     ```
 
-    ![img](beforedelete.JPG)
-    ![img](delete.JPG)
+    ![img](./user/beforedelete.JPG)
+    ![img](./user/delete.JPG)
 
