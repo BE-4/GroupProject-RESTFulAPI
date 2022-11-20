@@ -15,6 +15,6 @@ router.get("/profile", profile);
 router.delete("/deleteUser", deleteUser);
 router.get("/admin", admin);
 router.patch("/:id", updateByID);
-router.delete("/:Id", deleteByID);
+router.delete("/:id", deleteByID);
 
 module.exports = router;
