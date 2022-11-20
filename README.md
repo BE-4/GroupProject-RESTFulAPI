@@ -234,7 +234,7 @@
     ```
 
     - Masukkan token yang didapat setelah login pada headers authorization
-      ![img](./Kuesioner/getkuesioner.png)
+      ![img](./Kuesioner/getKuesioner.png)
 
   - jawabKuesioner :
 
@@ -262,7 +262,7 @@
     ```
 
     - Masukkan token yang didapat setelah login pada headers authorization
-      ![img](./Kuesioner/jawabkuesioner.png)
+      ![img](./Kuesioner/jawabKuesioner.png)
 
   - getHasilKuesioner
 
@@ -287,7 +287,7 @@
     ```
 
     - Masukkan token yang didapat setelah login pada headers authorization
-      ![img](./Kuesioner/hasilkuesioner.png)
+      ![img](./Kuesioner/hasilKuesioner.png)
 
 ## _Endpoint Psikolog_
 
