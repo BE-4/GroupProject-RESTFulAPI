@@ -566,8 +566,9 @@
 
     user.save();
     ```
-
-    ![img](user_update.png)
+    ![img](beforeupdate.JPG)
+    ![img](update.JPG)
+    ![img](afterupdatee.JPG)
 
   - deleteByID :
 
