@@ -1,6 +1,6 @@
 # API Documentation
 
-### API URL : https://groupproject-restfulapi-production.up.railway.app/endpoint
+### API URL : https://groupproject-restfulapi-production.up.railway.app/
 
 ## _Endpoint Auth_
 
