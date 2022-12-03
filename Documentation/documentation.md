@@ -1,5 +1,27 @@
 # API Documentation
 
+### API URL :
+
+- Auth :
+  - Register(POST) : https://groupproject-restfulapi-production.up.railway.app/auth/register
+  - Login(POST): https://groupproject-restfulapi-production.up.railway.app/auth/login
+- Kuesioner :
+  - Get Kuesioner(GET) : https://groupproject-restfulapi-production.up.railway.app/
+  - Add Kuesioner(POST) : https://groupproject-restfulapi-production.up.railway.app/kuesioner/add
+  - Get Hasil Kuesioner(GET) : https://groupproject-restfulapi-production.up.railway.app/kuesioner/hasil
+- Psikolog :
+  - Get All Psikolog(GET) : https://groupproject-restfulapi-production.up.railway.app/
+  - Get Psikolog By Id(GET) : https://groupproject-restfulapi-production.up.railway.app/psikolog/:id
+  - Delete By Id(DELETE): https://groupproject-restfulapi-production.up.railway.app/psikolog/:id
+  - Update By Id(PATCH) : https://groupproject-restfulapi-production.up.railway.app/psikolog/:id
+- User :
+  - Get All User(GET) : https://groupproject-restfulapi-production.up.railway.app/user/AllUser
+  - Profile User(GET) : https://groupproject-restfulapi-production.up.railway.app/user/profile
+  - Delete user(DELETE) : https://groupproject-restfulapi-production.up.railway.app/deleteUser
+  - Admin (GET) : https://groupproject-restfulapi-production.up.railway.app/user/admin
+  - Update By Id(PATCH) : https://groupproject-restfulapi-production.up.railway.app/:id
+  - Delete By Id(DELETE) : https://groupproject-restfulapi-production.up.railway.app/:id
+
 ## _Endpoint Auth_
 
 - Router :
@@ -435,6 +457,7 @@
     - Setelah kita melakukan delete data dan get data kembali :
 
     ![img](./Psikolog/afterdelete.JPG)
+
 ## _Endpoint User_
 
 - Router
@@ -443,7 +466,14 @@
   const express = require("express");
   const router = express.Router();
 
-  const { getAllUser, profile, deleteUser, admin, updateByID, deleteByID } = require("../controllers/user.controller");
+  const {
+    getAllUser,
+    profile,
+    deleteUser,
+    admin,
+    updateByID,
+    deleteByID,
+  } = require("../controllers/user.controller");
 
   router.get("/allUser", getAllUser);
   router.get("/profile", profile);
@@ -566,6 +596,7 @@
 
     user.save();
     ```
+
     ![img](./user/beforeupdate.JPG)
     ![img](./user/update.JPG)
     ![img](./user/afterupdatee.JPG)
@@ -586,4 +617,3 @@
 
     ![img](./user/beforedelete.JPG)
     ![img](./user/delete.JPG)
-
